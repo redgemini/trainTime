@@ -1,0 +1,17 @@
+html{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.jumbotron h1 {
+    font-size: 63px;
+}
+.jumbotron{
+background-color: rgb(29, 79, 172);
+color: white;
+margin-top: 20px;
+margin-bottom: 10px;
+}
+h1{
+    font-size: 100 px;
+    font-weight: 500px;
+}
