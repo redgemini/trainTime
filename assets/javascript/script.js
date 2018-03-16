@@ -33,13 +33,38 @@ $("#add-train-btn").on("click", function() {
 // Uploads train data to the database
   trainData.ref().push(newTrain);
 
-
 // Logs everything to console
   console.log(newTrain.name);
   console.log(newTrain.destination);
   console.log(newTrain.firstTrain);
   console.log(newTrain.frequency);
 
+// Clears all of the text-boxes
+  $("#train-name-input").val("");
+  $("#destination-input").val("");
+  $("#first-train-input").val("");
+  $("#frequency-input").val("");
 
+// Determine when the next train arrives.
+  return false;
 
+//Create Firebase event to add trains to database
+  trainData.ref().on("child_added", function(childSnapshot, prevChildKey) {
 
+      console.log(childSnapshot.val());
+
+// Store info in a variable.
+      var tName = childSnapshot.val().name;
+      var tDestination = childSnapshot.val().destination;
+      var tFrequency = childSnapshot.val().frequency;
+      var tFirstTrain = childSnapshot.val().firstTrain;
+
+      var timeArr = tFirstTrain.split(":");
+      var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
+      var maxMoment = moment.max(moment(), trainTime);
+      var tMinutes;
+      var tArrival;
+      
+  //Statement to determine the first train time
+      
+  });
