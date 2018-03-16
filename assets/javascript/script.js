@@ -20,7 +20,7 @@ $("#add-train-btn").on("click", function() {
   var firstTrain = $("#first-train-input").val().trim();
   var frequency = $("#frequency-input").val().trim();
 
-  //Object for trainData
+//Object for trainData
   var newTrain = {
       name: trainName,
     destination: destination,
@@ -29,3 +29,17 @@ $("#add-train-btn").on("click", function() {
   }
 
 })
+
+// Uploads train data to the database
+  trainData.ref().push(newTrain);
+
+
+// Logs everything to console
+  console.log(newTrain.name);
+  console.log(newTrain.destination);
+  console.log(newTrain.firstTrain);
+  console.log(newTrain.frequency);
+
+
+
+
