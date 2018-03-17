@@ -22,13 +22,11 @@ $("#add-train-btn").on("click", function() {
 
 //Object for trainData
   var newTrain = {
-      name: trainName,
+    name: trainName,
     destination: destination,
     firstTrain: firstTrain,
     frequency: frequency,
-  }
-
-})
+  };
 
 // Uploads train data to the database
   trainData.ref().push(newTrain);
@@ -47,24 +45,46 @@ $("#add-train-btn").on("click", function() {
 
 // Determine when the next train arrives.
   return false;
+});
 
 //Create Firebase event to add trains to database
   trainData.ref().on("child_added", function(childSnapshot, prevChildKey) {
 
-      console.log(childSnapshot.val());
+  console.log(childSnapshot.val());
 
 // Store info in a variable.
-      var tName = childSnapshot.val().name;
-      var tDestination = childSnapshot.val().destination;
-      var tFrequency = childSnapshot.val().frequency;
-      var tFirstTrain = childSnapshot.val().firstTrain;
+    var tName = childSnapshot.val().name;
+    var tDestination = childSnapshot.val().destination;
+    var tFrequency = childSnapshot.val().frequency;
+    var tFirstTrain = childSnapshot.val().firstTrain;
 
-      var timeArr = tFirstTrain.split(":");
-      var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
-      var maxMoment = moment.max(moment(), trainTime);
-      var tMinutes;
-      var tArrival;
+    var timeArr = tFirstTrain.split('-');
+    var trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
+    var maxMoment = moment.max(moment(), trainTime);
+    var tMinutes;
+    var tArrival;
       
-  //Statement to determine the first train time
-      
+
+//Statement to determine the first train time
+    if (maxMoment === trainTime) {
+      tArrival = trainTime.format("hh:mm A");
+      tMinutes = trainTime.diff(moment(), "minutes");
+    } else {
+
+//Calculate the minutes until arrival
+    var differenceTimes = moment().diff(trainTime, "minutes");
+    var tRemainder = differenceTimes % tFrequency;
+    tMinutes = tFrequency - tRemainder;
+
+// To calculate the arrival time, add the tMinutes to the currrent time
+  tArrival = moment().add(tMinutes, "m").format("hh:mm A");
+  }
+  
+  console.log("tMinutes:", tMinutes);
+  console.log("tArrival:", tArrival);
+  
+// Add each train's data into the table
+        $("#train-table > tbody").append("<tr><td>" + tName + "</td><td>" + tDestination + "</td><td>" +
+          tFrequency + "</td><td>" + tArrival + "</td><td>" + tMinutes + "</td></tr>");
+
   });
